@@ -1,0 +1,9 @@
+C:\Users\Admin\source\repos\XP_SystemShutdown\XP_SystemShutdown\bin\Release\XP_SystemShutdown.exe
+C:\Users\Admin\source\repos\XP_SystemShutdown\XP_SystemShutdown\bin\Release\XP_SystemShutdown.pdb
+C:\Users\Admin\source\repos\XP_SystemShutdown\XP_SystemShutdown\obj\Release\XP_SystemShutdown.Form1.resources
+C:\Users\Admin\source\repos\XP_SystemShutdown\XP_SystemShutdown\obj\Release\XP_SystemShutdown.Properties.Resources.resources
+C:\Users\Admin\source\repos\XP_SystemShutdown\XP_SystemShutdown\obj\Release\XP_SystemShutdown.csproj.GenerateResource.cache
+C:\Users\Admin\source\repos\XP_SystemShutdown\XP_SystemShutdown\obj\Release\XP_SystemShutdown.csproj.CoreCompileInputs.cache
+C:\Users\Admin\source\repos\XP_SystemShutdown\XP_SystemShutdown\obj\Release\XP_SystemShutdown.exe
+C:\Users\Admin\source\repos\XP_SystemShutdown\XP_SystemShutdown\obj\Release\XP_SystemShutdown.pdb
+C:\Users\Admin\source\repos\XP_SystemShutdown\XP_SystemShutdown\obj\Release\XP_SystemShutdown.csproj.AssemblyReference.cache
