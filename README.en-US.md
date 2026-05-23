@@ -1,9 +1,8 @@
 # XP_SystemShutdown
-[简体中文]()
-
+[简体中文](https://github.com/trustedinstallera-cell/XPSystemShutdown/blob/main/README.zh-CN.md)
 XP-inspired system shutdown dialog built in C#/.NET. Mimics old Windows UI and triggers real shutdown commands.
 
-## Prerequisite
+## Prerequisites
 .NET framework 4.0 or higher, which is built-in in Windows 8 or higher operating system. The minimum system is Windows XP but not necessary.
 Make sure your account has privilege for shutting down your computer.
 > [!Note]
@@ -18,7 +17,7 @@ Goto [release page](https://github.com/trustedinstallera-cell/XPSystemShutdown/r
 ### Run
 Run XP_Shutdown.exe in command prompt with shutdown syntax.
 
-All the commands below can run individually and no need to type texts after :: symbol.
+All the commands below can run individually and no need to type text after :: symbol.
 All the `-?` parameters can be replaced by `/?` (? means a single character).
 ``` bat
 shutdown -s -t 3600  :: Shutdown after an hour (3600 seconds)
