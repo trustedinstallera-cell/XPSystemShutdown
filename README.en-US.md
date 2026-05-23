@@ -1,5 +1,6 @@
 # XP_SystemShutdown
 [简体中文](https://github.com/trustedinstallera-cell/XPSystemShutdown/blob/main/README.zh-CN.md)
+
 XP-inspired system shutdown dialog built in C#/.NET. Mimics old Windows UI and triggers real shutdown commands.
 
 ## Prerequisites
