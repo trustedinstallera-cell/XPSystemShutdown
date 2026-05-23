@@ -3,8 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.IO;
 using System.Runtime.InteropServices;
-using System.Security.Principal;
 using System.Text;
+using System.Threading;
 using System.Windows.Forms;
 
 namespace XP_SystemShutdown
@@ -30,17 +30,10 @@ namespace XP_SystemShutdown
             string originalArgs = string.Join(" ", args);
             string system32 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "System32");
 
-            // 如果没有参数，直接调用系统shutdown
             if (args.Length == 0)
             {
-                var startInfo1 = new ProcessStartInfo
-                {
-                    FileName = "cmd.exe",
-                    Arguments = $"/c \"{Path.Combine(system32, "shutdown.exe")}\"",
-                    UseShellExecute = true,
-                    CreateNoWindow = false
-                };
-                Process.Start(startInfo1);
+                ConsoleCtrl.Print(_lang[1005]);
+                //Thread.Sleep(300);
                 Environment.Exit(0);
             }
 
@@ -117,8 +110,8 @@ namespace XP_SystemShutdown
             {
                 string output = current.StandardOutput.ReadToEnd();
                 string error = current.StandardError.ReadToEnd();
-                Console.WriteLine(output);
-                Console.WriteLine(error);
+                Console.Write(output);
+                Console.Write(error);
                 current.WaitForExit();
 
                 if (timeout > 0)
@@ -128,7 +121,7 @@ namespace XP_SystemShutdown
                         case 0: // 成功
                             Application.EnableVisualStyles();
                             Application.SetCompatibleTextRenderingDefault(false);
-                            XP_SystemShutdown.Form1 Form = new XP_SystemShutdown.Form1(_lang);
+                            Form1 Form = new XP_SystemShutdown.Form1(_lang);
                             Application.Run(Form);
                             break;
 
@@ -156,4 +149,5 @@ namespace XP_SystemShutdown
             }
         }
     }
+
 }

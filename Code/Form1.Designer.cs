@@ -49,12 +49,12 @@ namespace XP_SystemShutdown
             const int SC_MAXIMIZE = 0xF030;
 
             const int HTLEFT = 10;
-            const int HTRIGHT = 11;
-            const int HTTOP = 12;
-            const int HTTOPLEFT = 13;
-            const int HTTOPRIGHT = 14;
-            const int HTBOTTOM = 15;
-            const int HTBOTTOMLEFT = 16;
+            //const int HTRIGHT = 11;
+            //const int HTTOP = 12;
+            //const int HTTOPLEFT = 13;
+           // const int HTTOPRIGHT = 14;
+            //const int HTBOTTOM = 15;
+            //const int HTBOTTOMLEFT = 16;
             const int HTBOTTOMRIGHT = 17;
             const int HTCAPTION = 2;
 
