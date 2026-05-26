@@ -98,6 +98,43 @@ namespace Localization
             return dict;
         }
 
+        public static Dictionary<int, string> Read(string filePath, Encoding encoding)
+        {
+            var result = new Dictionary<int, string>();
+
+            if (!File.Exists(filePath))
+                return result;
+
+            try
+            {
+                // 使用指定的编码读取所有行
+                var lines = File.ReadAllLines(filePath, encoding);
+
+                foreach (var line in lines)
+                {
+                    // 跳过空行和注释行（; 或 # 开头）
+                    if (string.IsNullOrWhiteSpace(line) || line.TrimStart().StartsWith(";") || line.TrimStart().StartsWith("#"))
+                        continue;
+
+                    // 解析 key=value 格式
+                    var parts = line.Split('=');
+                    if (parts.Length == 2)
+                    {
+                        if (int.TryParse(parts[0].Trim(), out int key))
+                        {
+                            result[key] = parts[1].Trim();
+                        }
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+                Console.WriteLine($"读取语言文件失败: {ex.Message}");
+            }
+
+            return result;
+        }
+
         /// <summary>
         /// 使用 Windows API 读取（适用于有节的 INI 文件）
         /// </summary>

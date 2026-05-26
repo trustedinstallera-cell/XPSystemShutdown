@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Windows.Forms;
+using XP_SystemShutdown.GUI;
 
 namespace XP_SystemShutdown
 {
@@ -51,18 +52,11 @@ namespace XP_SystemShutdown
                     label2.Text = _lang[1002];
 
                 if (_lang.ContainsKey(1003))
-                    label3.Text = _lang[1003];
+                    groupBox1.Text = _lang[1003];
+              
             }
 
-            SetupNoSelectTextBox(textBox1); 
-            this.textBox1.TabStop = false;
-            this.textBox1.Cursor = Cursors.Default;
-            this.textBox1.MouseDown += (s, e) =>
-            {
-                // 让焦点转移到其他控件（比如父窗体或随便一个不可见控件）
-                this.ActiveControl = null;
-            };
-            this.label4.Text = Program.message;
+            label3.Text = Program.message;
 
             timer.Interval = 1000;  // 1秒触发一次
             timer.Tick += Timer_Tick;
@@ -92,9 +86,26 @@ namespace XP_SystemShutdown
 
         private void UpdateDisplay()
         {
+            string append = null;
+            if(remainingSeconds > 60 * 60 * 24)
+            {
+                append = (remainingSeconds / 60 / 60 / 24).ToString();
+                if (_lang.ContainsKey(1006))
+                {
+                    append += Utils.trimConfig(_lang[1006]);
+                }
+                else
+                {
+                    append += " days"; // hard-coded in Windows XP
+                }
+            }
+            else
+            {
+                append= TimeSpan.FromSeconds(remainingSeconds).ToString("hh\\:mm\\:ss");
+                // 或者只显示秒: remainingSeconds.ToString();
+            }
             // 格式化为 hh:mm:ss 
-            label2.Text = _lang[1002] + TimeSpan.FromSeconds(remainingSeconds).ToString("hh\\:mm\\:ss");
-            // 或者只显示秒: remainingSeconds.ToString();
+            label2.Text = _lang[1002] + append;
         }
 
         private void SetupNoSelectTextBox(TextBox textBox)
@@ -134,5 +145,6 @@ namespace XP_SystemShutdown
                 textBox.SelectionLength = 0;
             };
         }
+
     }
 }

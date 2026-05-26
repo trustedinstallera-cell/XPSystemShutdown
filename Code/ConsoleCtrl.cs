@@ -2,6 +2,7 @@
 using System.Runtime.InteropServices;
 using System.Threading;
 using System.Windows.Forms;
+using XP_SystemShutdown.GUI;
 
 namespace XP_SystemShutdown
 {
@@ -55,9 +56,9 @@ namespace XP_SystemShutdown
         {
             if (!AttachConsole(ATTACH_PARENT_PROCESS))
             {
-                Application.EnableVisualStyles();
+                //Application.EnableVisualStyles();
                 Application.SetCompatibleTextRenderingDefault(false);
-                AllocConsole();
+                //AllocConsole();
                 Console.WriteLine(Program._lang[1005]);
                 return;
             }
@@ -74,7 +75,7 @@ namespace XP_SystemShutdown
 
                 // 直接输出，不换行（光标已经在正确位置）
                 // 使用 \r 回到行首，然后输出内容覆盖当前行
-                Console.Write("\r"); // 回到行首
+                //Console.Write("\r"); // 回到行首
 
                 // 清除当前行
                 Console.Write(new string(' ', Console.BufferWidth - 1));

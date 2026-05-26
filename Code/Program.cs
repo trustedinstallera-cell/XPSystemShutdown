@@ -27,7 +27,10 @@ namespace XP_SystemShutdown
         [STAThread]
         public static void Main(string[] args)
         {
-            string originalArgs = string.Join(" ", args);
+            string originalArgs = string.Join(" ", Array.ConvertAll(args, arg =>
+            {
+                return arg.Contains(" ") ? $"\"{arg}\"" : arg;
+            }));
             string system32 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "System32");
 
             if (args.Length == 0)
@@ -41,19 +44,30 @@ namespace XP_SystemShutdown
             bool isAbort = false;
             for (int i = 0; i < args.Length; i++)
             {
-                if ((args[i].ToLower() == "/t" || args[i].ToLower() == "-t") && i + 1 < args.Length)
-                {
-                    int.TryParse(args[i + 1], out timeout);
-                }
+                string arg = args[i].ToLower();
 
-                if ((args[i].ToLower() == "/a" || args[i].ToLower() == "-a"))
+                if ((arg == "/t" || arg == "-t") && i + 1 < args.Length)
+                {
+                    int parsedTimeout;  // 使用临时变量
+                    if (!int.TryParse(args[i + 1], out parsedTimeout) || parsedTimeout < 0 || parsedTimeout > 10 * 12 * 24 * 60 * 60)
+                    {
+                        isAbort = true;
+                        NativeMethods.InitConsole();
+                        Console.WriteLine(_lang.ContainsKey(1007) ? _lang[1007] : "Invalid parameter.");
+                        Environment.Exit(2);
+                        break;
+                    }
+                    timeout = parsedTimeout;  // 赋值给外部字段
+                    break;
+                }
+                else if (arg == "/a" || arg == "-a")
                 {
                     isAbort = true;
                 }
-
-                if ((args[i].ToLower() == "/c" || args[i].ToLower() == "-c") && i + 1 < args.Length)
+                else if ((arg == "/c" || arg == "-c") && i + 1 < args.Length)
                 {
                     message = args[i + 1];
+                    i++; // 跳过已使用的参数值
                 }
             }
 
@@ -84,14 +98,30 @@ namespace XP_SystemShutdown
                 var abortInfo = new ProcessStartInfo(Path.Combine(system32, "shutdown.exe"), "/a")
                 {
                     UseShellExecute = false,
-                    CreateNoWindow = true,
+                    CreateNoWindow = true,           // 不创建窗口
+                    WindowStyle = ProcessWindowStyle.Hidden,  // 窗口样式隐藏
                     RedirectStandardOutput = true,
                     RedirectStandardError = true
                 };
 
                 using (Process abortProcess = Process.Start(abortInfo))
                 {
+                    // 先读取输出和错误（避免缓冲区满导致死锁）
+                    string output = abortProcess.StandardOutput.ReadToEnd();
+                    string error = abortProcess.StandardError.ReadToEnd();
+
                     abortProcess.WaitForExit();
+
+                    // shutdown 的错误信息通常输出到 StandardError
+                    if (!string.IsNullOrEmpty(error))
+                    {
+                        ConsoleCtrl.Print(error);  // 输出："没有任何进行中的关机过程，所以无法中止系统关机。(1116)"
+                    }
+                    else if (!string.IsNullOrEmpty(output))
+                    {
+                        ConsoleCtrl.Print(output);
+                    }
+
                 }
 
                 Environment.Exit(0);
@@ -119,7 +149,7 @@ namespace XP_SystemShutdown
                     switch (current.ExitCode)
                     {
                         case 0: // 成功
-                            Application.EnableVisualStyles();
+                            //Application.EnableVisualStyles();
                             Application.SetCompatibleTextRenderingDefault(false);
                             Form1 Form = new XP_SystemShutdown.Form1(_lang);
                             Application.Run(Form);
@@ -151,3 +181,5 @@ namespace XP_SystemShutdown
     }
 
 }
+
+

@@ -136,11 +136,11 @@ namespace XP_SystemShutdown
             this.imageList1 = new System.Windows.Forms.ImageList(this.components);
             this.pictureBox1 = new System.Windows.Forms.PictureBox();
             this.label1 = new System.Windows.Forms.Label();
-            this.textBox1 = new System.Windows.Forms.TextBox();
             this.label3 = new System.Windows.Forms.Label();
             this.label2 = new System.Windows.Forms.Label();
-            this.label4 = new System.Windows.Forms.Label();
+            this.groupBox1 = new System.Windows.Forms.GroupBox();
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).BeginInit();
+            this.groupBox1.SuspendLayout();
             this.SuspendLayout();
             // 
             // imageList1
@@ -152,82 +152,72 @@ namespace XP_SystemShutdown
             // pictureBox1
             // 
             this.pictureBox1.Image = ((System.Drawing.Image)(resources.GetObject("pictureBox1.Image")));
-            this.pictureBox1.Location = new System.Drawing.Point(23, 28);
+            this.pictureBox1.Location = new System.Drawing.Point(12, 18);
             this.pictureBox1.Name = "pictureBox1";
-            this.pictureBox1.Size = new System.Drawing.Size(48, 48);
+            this.pictureBox1.Size = new System.Drawing.Size(32, 32);
             this.pictureBox1.SizeMode = System.Windows.Forms.PictureBoxSizeMode.Zoom;
             this.pictureBox1.TabIndex = 0;
             this.pictureBox1.TabStop = false;
             // 
             // label1
             // 
-            this.label1.Location = new System.Drawing.Point(75, 28);
+            this.label1.Location = new System.Drawing.Point(60, 18);
             this.label1.Name = "label1";
-            this.label1.Size = new System.Drawing.Size(295, 66);
+            this.label1.Size = new System.Drawing.Size(295, 88);
             this.label1.TabIndex = 1;
             this.label1.Text = "label1";
             // 
-            // textBox1
-            // 
-            this.textBox1.BackColor = System.Drawing.SystemColors.Control;
-            this.textBox1.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.textBox1.Cursor = System.Windows.Forms.Cursors.Arrow;
-            this.textBox1.Location = new System.Drawing.Point(78, 158);
-            this.textBox1.Multiline = true;
-            this.textBox1.Name = "textBox1";
-            this.textBox1.ReadOnly = true;
-            this.textBox1.Size = new System.Drawing.Size(292, 108);
-            this.textBox1.TabIndex = 3;
-            this.textBox1.WordWrap = false;
-            // 
             // label3
             // 
-            this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(88, 149);
+            this.label3.Location = new System.Drawing.Point(4, 21);
+            this.label3.Margin = new System.Windows.Forms.Padding(1, 0, 1, 0);
             this.label3.Name = "label3";
-            this.label3.Size = new System.Drawing.Size(55, 15);
+            this.label3.Size = new System.Drawing.Size(289, 87);
             this.label3.TabIndex = 4;
             this.label3.Text = "label3";
             // 
             // label2
             // 
-            this.label2.Location = new System.Drawing.Point(78, 115);
+            this.label2.Location = new System.Drawing.Point(58, 107);
             this.label2.Name = "label2";
-            this.label2.Size = new System.Drawing.Size(292, 19);
+            this.label2.Size = new System.Drawing.Size(277, 19);
             this.label2.TabIndex = 5;
             this.label2.Text = "label2";
             this.label2.TextAlign = System.Drawing.ContentAlignment.MiddleCenter;
             // 
-            // label4
+            // groupBox1
             // 
-            this.label4.Location = new System.Drawing.Point(88, 167);
-            this.label4.Name = "label4";
-            this.label4.Size = new System.Drawing.Size(278, 98);
-            this.label4.TabIndex = 6;
-            this.label4.Text = "label4";
+            this.groupBox1.BackgroundImageLayout = System.Windows.Forms.ImageLayout.None;
+            this.groupBox1.Controls.Add(this.label3);
+            this.groupBox1.FlatStyle = System.Windows.Forms.FlatStyle.Flat;
+            this.groupBox1.Location = new System.Drawing.Point(58, 138);
+            this.groupBox1.Name = "groupBox1";
+            this.groupBox1.Size = new System.Drawing.Size(297, 111);
+            this.groupBox1.TabIndex = 7;
+            this.groupBox1.TabStop = false;
+            this.groupBox1.Text = "groupBox11";
             // 
             // Form1
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(8F, 15F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(392, 278);
-            this.Controls.Add(this.label4);
+            this.AutoSize = true;
+            this.ClientSize = new System.Drawing.Size(367, 261);
+            this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label2);
-            this.Controls.Add(this.label3);
-            this.Controls.Add(this.textBox1);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.pictureBox1);
             this.MaximizeBox = false;
-            this.MaximumSize = new System.Drawing.Size(400, 320);
+            this.MaximumSize = new System.Drawing.Size(375, 303);
             this.MinimizeBox = false;
-            this.MinimumSize = new System.Drawing.Size(400, 320);
+            this.MinimumSize = new System.Drawing.Size(375, 303);
             this.Name = "Form1";
             this.ShowIcon = false;
             this.Text = "Form1";
             this.TopMost = true;
             ((System.ComponentModel.ISupportInitialize)(this.pictureBox1)).EndInit();
+            this.groupBox1.ResumeLayout(false);
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -235,10 +225,9 @@ namespace XP_SystemShutdown
 
         private System.Windows.Forms.ImageList imageList1;
         private System.Windows.Forms.PictureBox pictureBox1;
-        public System.Windows.Forms.Label label1;
-        private System.Windows.Forms.TextBox textBox1;
         private System.Windows.Forms.Label label3;
         public System.Windows.Forms.Label label2;
-        private System.Windows.Forms.Label label4;
+        protected Label label1;
+        private GroupBox groupBox1;
     }
 }
