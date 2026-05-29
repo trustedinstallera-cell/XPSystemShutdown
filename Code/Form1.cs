@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Drawing;
 using System.Runtime.InteropServices;
 using System.Security.Principal;
 using System.Windows.Forms;
@@ -9,9 +10,9 @@ namespace XP_SystemShutdown
 {
     public partial class Form1 : Form
     {
-        private Dictionary<int, string> _lang;
+        private readonly Dictionary<int, string> _lang;
         private static int remainingSeconds;
-        private Timer timer = new System.Windows.Forms.Timer();
+        private readonly Timer timer = new System.Windows.Forms.Timer();
 
         [DllImport("user32.dll")]
         private static extern IntPtr GetSystemMenu(IntPtr hWnd, bool bRevert);
@@ -31,8 +32,71 @@ namespace XP_SystemShutdown
 
         public Form1(Dictionary<int, string> lang)
         {
+
             InitializeComponent();
             DisableCloseButton();
+
+
+            IntPtr hwnd = this.Handle;
+
+            int style =
+                NativeMethods.GetWindowLong(
+                    hwnd,
+                    NativeMethods.GWL_STYLE);
+
+            style &= ~NativeMethods.WS_THICKFRAME;
+            style &= ~NativeMethods.WS_MAXIMIZEBOX;
+            style &= ~NativeMethods.WS_MINIMIZEBOX;
+
+            style |= NativeMethods.WS_POPUP;
+            style |= NativeMethods.WS_CAPTION;
+            style |= NativeMethods.WS_SYSMENU;
+
+            NativeMethods.SetWindowLong(
+                hwnd,
+                NativeMethods.GWL_STYLE,
+                style);
+
+            int exstyle =
+                NativeMethods.GetWindowLong(
+                    hwnd,
+                    NativeMethods.GWL_EXSTYLE);
+
+            exstyle |= NativeMethods.WS_EX_DLGMODALFRAME;
+            exstyle |= NativeMethods.WS_EX_WINDOWEDGE;
+            exstyle |= NativeMethods.WS_EX_TOPMOST;
+
+            NativeMethods.SetWindowLong(
+                hwnd,
+                NativeMethods.GWL_EXSTYLE,
+                exstyle);
+
+            NativeMethods.SetWindowPos(
+                hwnd,
+                IntPtr.Zero,
+                0,
+                0,
+                0,
+                0,
+                NativeMethods.SWP_NOMOVE |
+                NativeMethods.SWP_NOSIZE |
+                NativeMethods.SWP_NOZORDER |
+                NativeMethods.SWP_FRAMECHANGED);
+
+            //this.CenterToScreen();
+            //this.StartPosition = FormStartPosition.CenterScreen;
+            NativeMethods.RECT rc;
+            NativeMethods.GetWindowRect(hwnd, out rc);
+
+            int windowWidth = rc.right - rc.left;
+            int windowHeight = rc.bottom - rc.top;
+
+            Rectangle wa = Screen.PrimaryScreen.WorkingArea;
+
+            this.Location = new Point(
+                wa.Left + (wa.Width - windowWidth) / 2,
+                wa.Top + (wa.Height - windowHeight) / 2
+            );
 
             timer.Interval = 1000;  // 1秒触发一次
             //timer.Tick += Timer_Tick;
@@ -53,10 +117,14 @@ namespace XP_SystemShutdown
 
                 if (_lang.ContainsKey(1003))
                     groupBox1.Text = _lang[1003];
-              
+
             }
 
             label3.Text = Program.message;
+
+            this.StartPosition = FormStartPosition.CenterScreen;
+            //int titleBarHeight = this.Height - this.ClientSize.Height;
+            this.Location = new Point(this.DesktopLocation.X, this.DesktopLocation.Y - this.ClientSize.Height / 2 + Utils.GetTitleBarHeight(this));
 
             timer.Interval = 1000;  // 1秒触发一次
             timer.Tick += Timer_Tick;
@@ -86,13 +154,13 @@ namespace XP_SystemShutdown
 
         private void UpdateDisplay()
         {
-            string append = null;
-            if(remainingSeconds > 60 * 60 * 24)
+            string append;
+            if (remainingSeconds > 60 * 60 * 24)
             {
                 append = (remainingSeconds / 60 / 60 / 24).ToString();
                 if (_lang.ContainsKey(1006))
                 {
-                    append += Utils.trimConfig(_lang[1006]);
+                    append += StringUtils.TrimConfig(_lang[1006]);
                 }
                 else
                 {
@@ -101,7 +169,7 @@ namespace XP_SystemShutdown
             }
             else
             {
-                append= TimeSpan.FromSeconds(remainingSeconds).ToString("hh\\:mm\\:ss");
+                append = TimeSpan.FromSeconds(remainingSeconds).ToString("hh\\:mm\\:ss");
                 // 或者只显示秒: remainingSeconds.ToString();
             }
             // 格式化为 hh:mm:ss 

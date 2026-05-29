@@ -30,15 +30,18 @@ namespace Localization
         /// 读取无节 INI 文件，返回 Dictionary<int, string>
         /// </summary>
         /// 
-        public static Dictionary<int,string> Fallback()
+        public static Dictionary<int, string> Fallback()
         {
-            var dict=new Dictionary<int,string>();
-            dict.Add(1000, "System Shutdown");
-            dict.Add(1001, "This system is shutting down. Please save all work in progress and log off .Any unsaved changes will be lost. This shutdown was initiated by %1");
-            dict.Add(1002, "Time before shutting down:  ");
-            dict.Add(1003, "Message");
-            dict.Add(1004, "A system shutdown is in progress.");
-            dict.Add(1005, @"Usage: shutdown [-i | -l | -s | -r | -a] [-f] [-m \\computername] [-t xx] [-c ""comment""] [-d up:xx:yy]" +
+            var dict = new Dictionary<int, string>
+            {
+                { 1000, "System Shutdown" },
+                { 1001, "This system is shutting down. Please save all work in progress and log off .Any unsaved changes will be lost. This shutdown was initiated by %1" },
+                { 1002, "Time before shutting down:  " },
+                { 1003, "Message" },
+                { 1004, "A system shutdown is in progress." },
+                {
+                    1005,
+                    @"Usage: shutdown [-i | -l | -s | -r | -a] [-f] [-m \\computername] [-t xx] [-c ""comment""] [-d up:xx:yy]" +
                 "\tNo args\t\t\tDisplay this message (same as -?)" +
                 "\t-i\t\t\tDisplay GUI interface, must be the first option" +
                 "\t-l\t\t\tLog off (cannot be used with -m option)\\t-s\t\t\tShutdown the computer" +
@@ -52,10 +55,11 @@ namespace Localization
                 "\t\t\t\tu is the user code" +
                 "\t\t\t\tp is a planned shutdown code" +
                 "\t\t\t\txx is the major reason code (positive integer less than 256)" +
-                "\t\t\t\tyy is the minor reason code (positive integer less than 65536) \r\n");
-            dict.Add(1006, "days");
-            dict.Add(1007, "The parameter is incorrect.");
-#warning todo: Windows 10 will not show dialog
+                "\t\t\t\tyy is the minor reason code (positive integer less than 65536) \r\n"
+                },
+                { 1006, "days" },
+                { 1007, "The parameter is incorrect." }
+            };
             return dict;
 
         }
@@ -68,14 +72,15 @@ namespace Localization
             {
                 fullPath = Path.GetFullPath(filePath);
             }
-            catch (Exception){
+            catch (Exception)
+            {
                 return Fallback();
             }
 
             // 检查文件是否存在
-              if (!File.Exists(fullPath))
+            if (!File.Exists(fullPath))
             {
-                string errorMsg = $"Error: Cannot find localization file.\nFilePath={fullPath}";
+                string errorMsg = string.Format("Error: Cannot find localization file.\nFilePath={0}", fullPath);
                 //MessageBox.Show(errorMsg, "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 //throw new FileNotFoundException(errorMsg, filePath);
                 Debug.WriteLine(errorMsg);
@@ -95,7 +100,7 @@ namespace Localization
 
                 if (string.IsNullOrWhiteSpace(content))
                 {
-                    MessageBox.Show($"Error: File is empty.\nFilePath={fullPath}", "Empty File",
+                    MessageBox.Show(string.Format("Error: File is empty.\nFilePath={0}", fullPath), "Empty File",
                         MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     return dict;
                 }
@@ -121,7 +126,8 @@ namespace Localization
                             // 处理可能的值中的转义字符
                             value = value.Replace("\\n", "\n").Replace("\\r", "\r").Replace("\\t", "\t");
 
-                            if (int.TryParse(keyStr, out int id))
+                            int id;
+                            if (int.TryParse(keyStr, out id))
                             {
                                 dict[id] = value;
                             }
@@ -129,7 +135,7 @@ namespace Localization
                     }
                 }
             }
-//#if DEBUG
+            //#if DEBUG
 #if false
             catch (Exception _)
             {
@@ -138,7 +144,7 @@ namespace Localization
                     MessageBoxButtons.OK, MessageBoxIcon.Error);
                     throw;
 #else
-            catch (Exception )
+            catch (Exception)
             {
                 return Fallback();
 #endif
@@ -169,7 +175,8 @@ namespace Localization
                     var parts = line.Split('=');
                     if (parts.Length == 2)
                     {
-                        if (int.TryParse(parts[0].Trim(), out int key))
+                        int key;
+                        if (int.TryParse(parts[0].Trim(), out key))
                         {
                             result[key] = parts[1].Trim();
                         }
@@ -178,7 +185,7 @@ namespace Localization
             }
             catch (Exception ex)
             {
-                Console.WriteLine($"读取语言文件失败: {ex.Message}");
+                Console.WriteLine(string.Format("读取语言文件失败: {0}", ex.Message));
             }
 
             return result;
@@ -195,7 +202,7 @@ namespace Localization
 
             if (!File.Exists(fullPath))
             {
-                string errorMsg = $"Error: Cannot find file.\nFilePath={fullPath}";
+                string errorMsg = string.Format("Error: Cannot find file.{0}FilePath={1}", Environment.NewLine, fullPath);
                 MessageBox.Show(errorMsg, "File Not Found", MessageBoxButtons.OK, MessageBoxIcon.Error);
                 throw new FileNotFoundException(errorMsg, filePath);
             }
@@ -219,8 +226,11 @@ namespace Localization
                     string keyStr = line.Substring(0, eqIndex).Trim();
                     string value = line.Substring(eqIndex + 1).Trim();
 
-                    if (int.TryParse(keyStr, out int id))
+                    int id;
+                    if (int.TryParse(keyStr, out id))
+                    {
                         dict[id] = value;
+                    }
                 }
             }
 

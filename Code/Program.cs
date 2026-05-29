@@ -24,14 +24,16 @@ namespace XP_SystemShutdown
         public static int timeout = -1;
         public static Dictionary<int, string> _lang = Localization.IniReader.Read(Path.Combine(Application.StartupPath, "lang.ini"));
 
-        
+
 
         [STAThread]
         public static void Main(string[] args)
         {
             string originalArgs = string.Join(" ", Array.ConvertAll(args, arg =>
             {
-                return arg.Contains(" ") ? $"\"{arg}\"" : arg;
+                if (arg.Contains(" "))
+                    return "\"" + arg + "\"";
+                return arg;
             }));
             string system32 = Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.Windows), "System32");
 
@@ -50,17 +52,16 @@ namespace XP_SystemShutdown
 
                 if ((arg == "/t" || arg == "-t") && i + 1 < args.Length)
                 {
-                    // 使用临时变量
-                    if (!int.TryParse(args[i + 1], out int parsedTimeout) || parsedTimeout < 0 || parsedTimeout > 10 * 12 * 24 * 60 * 60) // 10 years
+                    int parsedTimeout;
+                    if (!int.TryParse(args[i + 1], out parsedTimeout) || parsedTimeout < 0 || parsedTimeout > 10 * 365 * 24 * 60 * 60) // 10 years in seconds
                     {
                         isAbort = true;
                         NativeMethods.InitConsole();
                         Console.WriteLine(_lang.ContainsKey(1007) ? _lang[1007] : "Invalid parameter.");
                         Environment.Exit(2);
-                        break;
                     }
-                    timeout = parsedTimeout;  // 赋值给外部字段
-                    break;
+                    timeout = parsedTimeout;
+                    i++; // 跳过参数值
                 }
                 else if (arg == "/a" || arg == "-a")
                 {
@@ -69,7 +70,7 @@ namespace XP_SystemShutdown
                 else if ((arg == "/c" || arg == "-c") && i + 1 < args.Length)
                 {
                     message = args[i + 1];
-                    i++; // 跳过已使用的参数值
+                    i++; // 跳过参数值
                 }
             }
 
@@ -183,5 +184,6 @@ namespace XP_SystemShutdown
     }
 
 }
+
 
 
